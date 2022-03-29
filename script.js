@@ -16,16 +16,16 @@ function getElements() {
 }
 
 function loadFile(file) {
-  const fs = require("fs");
-
-  fs.readFile(file, (err, data) => {
+  var client = new XMLHttpRequest();
+  client.open('GET', '/'+file);
+  client.onreadystatechange = function() {
     if (err) throw err;
-    let text = data.toString();
+    let text = client.responseText;
     text.split(/\r\n|\n/).forEach(function (line) {
       words.push(line.trim());
     });
     console.log(words);
-  });
+  };
 }
 
 function addEvents() {
