@@ -1,0 +1,82 @@
+* {
+    margin: 10;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.wlist {
+    border: 1px solid;
+    max-width: 100px;
+    max-height: 250px;
+    margin: 10px;
+    display: block;
+    overflow-x: auto;
+    position: absolute;
+    background: white;
+    top: 50px;
+    left: 10px;
+}
+
+.ch1, .ch2, .ch3, .ch4, .ch5 {
+    position:absolute;
+    display:block;
+    top: 55px;
+    width: 15px;
+    height: 15px;
+    max-width: 15px;
+    max-height: 15px;
+    border: none;
+}
+.ch1 {
+    left:100px;
+}
+.ch2 {
+    left:150px;
+}
+.ch3 {
+    left:200px;
+}
+.ch4 {
+    left:250px;
+}
+.ch5 {
+    left:300px;
+}
+.btngrey {
+    background-color: rgba(128, 128, 128, 0.733);
+    left:0px;
+}
+.btnyellow {
+    background: yellow;
+    left:15px;
+}
+.btngreen {
+    background: green;
+    left:30px;
+}
+
+
+.l1, .l2, .l3, .l4, .l5 {
+    background-color: rgb(168, 168, 168);
+    width: 45px;
+    height: 45px;
+    font-size: 40px;
+    text-align: center;
+    position: absolute;
+    top: 60px;
+}
+.l1 {
+    left: 100px;
+}
+.l2 {
+    left: 150px;
+}
+.l3 {
+    left: 200px;
+}
+.l4 {
+    left: 250px;
+}
+.l5 {
+    left: 300px;
+}
