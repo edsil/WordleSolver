@@ -1,5 +1,9 @@
 "use strict";
-let l1, l2, l3, l4, l5, wordlist;
+let ls = [];
+ls.length = 5;
+let wordlist;
+let cs = [0, 0, 0, 0, 0];
+let states = ["bl", "gr", "yl", "gn"];
 let words = [];
 let tmpWords = [];
 let listCursor = 0;
@@ -12,6 +16,7 @@ window.onload = function () {
   getElements();
   addEvents();
   filters = initArray(5, 26, 0);
+  ls[0].focus();
 };
 
 function initArray(x, y, f) {
@@ -28,11 +33,11 @@ function initArray(x, y, f) {
 }
 
 function getElements() {
-  l1 = document.getElementById("l1");
-  l2 = document.getElementById("l2");
-  l3 = document.getElementById("l3");
-  l4 = document.getElementById("l4");
-  l5 = document.getElementById("l5");
+  ls[0] = document.getElementById("l1");
+  ls[1] = document.getElementById("l2");
+  ls[2] = document.getElementById("l3");
+  ls[3] = document.getElementById("l4");
+  ls[4] = document.getElementById("l5");
   wordlist = document.getElementById("wordlist");
 }
 
@@ -86,8 +91,47 @@ function updateList(fwords) {
   }
 }
 
+function focused(e) {
+  e.target.classList.remove(e.target.classList[2]);
+  e.target.classList.add("fc");
+}
+
+function defocused(e) {
+  e.target.classList.remove(e.target.classList[2]);
+  e.target.classList.add("uf");
+}
+
+function clickHandler(e) {
+  let letter = eval(e.id[1]);
+  let color = eval(e.id[2]);
+  cs[letter - 1] = color;
+  let lastClass = ls[letter - 1].classList[2];
+  ls[letter - 1].classList.remove(ls[letter - 1].classList[2]);
+  ls[letter - 1].classList.remove(ls[letter - 1].classList[1]);
+  let colClass = states[color];
+  ls[letter - 1].classList.add(colClass);
+  ls[letter - 1].classList.add(lastClass);
+  ls[letter - 1].focus();
+}
+
+function rotate(e) {
+  let letter = eval(e.id[1]);
+  let currColor = e.classList[1];
+  let focState = e.classList[2];
+  e.classList.remove(currColor);
+  e.classList.remove(focState);
+  let newColor = (cs[letter - 1] + 1) % 4;
+  cs[letter - 1] = newColor;
+  e.classList.add(states[newColor]);
+  e.classList.add(focState);
+}
+
 function addEvents() {
   window.addEventListener("keyup", readLetter);
+  for (let i = 0; i < 5; i++) {
+    ls[i].addEventListener("focus", focused);
+    ls[i].addEventListener("blur", defocused);
+  }
 }
 
 function filterList(listArray, letters) {
@@ -107,17 +151,16 @@ function filterList(listArray, letters) {
 
 function applyEnteredLetters() {
   let letters = [];
-  letters.push(l1.value);
-  letters.push(l2.value);
-  letters.push(l3.value);
-  letters.push(l4.value);
-  letters.push(l5.value);
+  for (let i = 0; i < 5; i++) {
+    letters.push(ls[i].value);
+  }
   tmpWords = filterList(words, letters);
   if (updatinglist) {
     updatinglist = false;
     let d = new Date();
     let now = d.getTime();
     while (listCursor != 0) {
+      d = new Date();
       if (d.getTime() - now >= 50) listCursor = 0;
     }
   }
@@ -138,6 +181,11 @@ function readLetter(e) {
     applyEnteredLetters();
     return;
   }
+  if (k == 32) {
+    rotate(el);
+    return;
+  }
+
   if (k == 38) {
     //up key
     document.getElementById("l1").focus();
