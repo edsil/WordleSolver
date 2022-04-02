@@ -55,28 +55,16 @@ function createLetters() {
     let xlet = String.fromCharCode(lett + 97).toUpperCase();
     letterBox.innerHTML = xlet;
     letterBox.id = "letter" + xlet;
-    letterBox.style.top = "0px";
-    letterBox.style.left = "0px";
+    letterBox.style.left = String(col * 27) + "px";
+    letterBox.style.top = String(row * 27) + "px";
     allLetters.appendChild(letterBox);
+    letters[lett] = letterBox;
+    col += 1;
+    if (col >= 9) {
+      col = 0;
+      row += 1;
+    }
   }
-
-  let letterBox = document.createElement("button");
-  letterBox.classList.add("letterbox");
-  letterBox.classList.add("allletters");
-  letterBox.innerHTML = "a";
-  letterBox.id = "letterA";
-  letterBox.style.top = "0px";
-  letterBox.style.left = "0px";
-  allLetters.appendChild(letterBox);
-
-  letterBox = document.createElement("button");
-  letterBox.classList.add("letterbox");
-  letterBox.classList.add("allletters");
-  letterBox.innerHTML = "b";
-  letterBox.id = "letterB";
-  letterBox.style.top = "0px";
-  letterBox.style.left = "30px";
-  allLetters.appendChild(letterBox);
 }
 
 async function loadFile(file) {
@@ -244,7 +232,7 @@ function readLetter(e) {
 
   // if a upper-case letter, changes to lower case
   //if (k >= 65 && k <= 90) {
-  el.value = el.value.toUpperCase();
+  el.value = String.fromCharCode(k).toUpperCase();
   //}
 
   // move focus to the next box - if it is in box 5, goes back to 1

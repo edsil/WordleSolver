@@ -1,5 +1,6 @@
 * {
-    margin: 10;
+    font-family: 'arial';
+    margin: 7px;
     padding: 0;
     box-sizing: border-box;
 }
@@ -41,7 +42,7 @@
     background-color:#F2F2F2; 
     font-size: 20px;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 0px;
     text-align: center;
     font-weight: bold;
     position: absolute;
@@ -49,7 +50,7 @@
     top: 60px;
     width: 75px;
     height: 45px;
-    transition: all 0.2s;
+    transition: all 0.5s;
 }
 .btngo:hover {
     color:#F2F2F2;
@@ -65,6 +66,7 @@
 
 .letterbox {
     background-color: #F2F2F2;
+    border: none;
     color: #000000;
     font-size: 15px;
     width: 25px;
