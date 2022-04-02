@@ -6,6 +6,7 @@ letters.length = 27;
 let wordlist, allLetters;
 let cs = [0, 0, 0, 0, 0];
 let states = ["bl", "gr", "yl", "gn"];
+let colors = [];
 let words = [];
 let tmpWords = [];
 let listCursor = 0;
@@ -52,6 +53,8 @@ function createLetters() {
     let letterBox = document.createElement("button");
     letterBox.classList.add("letterbox");
     letterBox.classList.add("allletters");
+    letterBox.classList.add("bl");
+
     let xlet = String.fromCharCode(lett + 97).toUpperCase();
     letterBox.innerHTML = xlet;
     letterBox.id = "letter" + xlet;
@@ -246,4 +249,12 @@ function readLetter(e) {
   applyEnteredLetters();
 }
 
-function goLetters() {}
+function goLetters() {
+  let letterCodes = [];
+  for (let i = 0; i < 5; i++) {
+    let letterCode = ls[i].value.toLowerCase().charCodeAt(0) - 97;
+    let color = cs[i];
+    letters[letterCode].classList.remove(letters[letterCode].classList[2]);
+    letters[letterCode].classList.add(states[color]);
+  }
+}

@@ -50,8 +50,9 @@
     top: 60px;
     width: 75px;
     height: 45px;
-    transition: all 0.5s;
+    transition: all 1s;
 }
+
 .btngo:hover {
     color:#F2F2F2;
     background-color: #000000;
@@ -76,25 +77,25 @@
 }
 
 .btngrey {
-    background-color: rgba(128, 128, 128, 0.733);
+    background-color: #808080;;
     left:0px;
 }
 .btnyellow {
-    background: yellow;
+    background: #FFFF00;;
     left:15px;
 }
 .btngreen {
-    background: green;
+    background: #008000;
     left:30px;
 }
 
-.fc {border: 3px solid black;}
-.uf {border: 1px solid lightgray;}
+.fc {border: 3px solid #000000;}
+.uf {border: 1px solid #CCCCCC;}
 
-.bl {background-color: rgb(242, 242, 242);}
-.gr {background-color: rgba(128, 128, 128, 0.733);}
-.yl {background-color: yellow;}
-.gn {background-color: green;}
+.bl {background-color: #F2F2F2;}
+.gr {background-color: #808080;}
+.yl {background-color: #FFFF00;}
+.gn {background-color: #008000;}
 
 .l1, .l2, .l3, .l4, .l5 {
     width: 45px;
