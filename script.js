@@ -1,7 +1,9 @@
 "use strict";
 let ls = [];
 ls.length = 5;
-let wordlist;
+let letters = [];
+letters.length = 27;
+let wordlist, allLetters;
 let cs = [0, 0, 0, 0, 0];
 let states = ["bl", "gr", "yl", "gn"];
 let words = [];
@@ -16,6 +18,7 @@ window.onload = function () {
   getElements();
   addEvents();
   filters = initArray(5, 26, 0);
+  createLetters();
   ls[0].focus();
 };
 
@@ -39,6 +42,41 @@ function getElements() {
   ls[3] = document.getElementById("l4");
   ls[4] = document.getElementById("l5");
   wordlist = document.getElementById("wordlist");
+  allLetters = document.getElementById("allLetters");
+}
+
+function createLetters() {
+  let row = 0;
+  let col = 0;
+  for (let lett = 0; lett < 26; lett++) {
+    let letterBox = document.createElement("button");
+    letterBox.classList.add("letterbox");
+    letterBox.classList.add("allletters");
+    let xlet = String.fromCharCode(lett + 97).toUpperCase();
+    letterBox.innerHTML = xlet;
+    letterBox.id = "letter" + xlet;
+    letterBox.style.top = "0px";
+    letterBox.style.left = "0px";
+    allLetters.appendChild(letterBox);
+  }
+
+  let letterBox = document.createElement("button");
+  letterBox.classList.add("letterbox");
+  letterBox.classList.add("allletters");
+  letterBox.innerHTML = "a";
+  letterBox.id = "letterA";
+  letterBox.style.top = "0px";
+  letterBox.style.left = "0px";
+  allLetters.appendChild(letterBox);
+
+  letterBox = document.createElement("button");
+  letterBox.classList.add("letterbox");
+  letterBox.classList.add("allletters");
+  letterBox.innerHTML = "b";
+  letterBox.id = "letterB";
+  letterBox.style.top = "0px";
+  letterBox.style.left = "30px";
+  allLetters.appendChild(letterBox);
 }
 
 async function loadFile(file) {
@@ -152,7 +190,7 @@ function filterList(listArray, letters) {
 function applyEnteredLetters() {
   let letters = [];
   for (let i = 0; i < 5; i++) {
-    letters.push(ls[i].value);
+    letters.push(ls[i].value.toLowerCase());
   }
   tmpWords = filterList(words, letters);
   if (updatinglist) {
@@ -205,9 +243,9 @@ function readLetter(e) {
   }
 
   // if a upper-case letter, changes to lower case
-  if (k >= 65 && k <= 90) {
-    el.value = String.fromCharCode(k + 32);
-  }
+  //if (k >= 65 && k <= 90) {
+  el.value = el.value.toUpperCase();
+  //}
 
   // move focus to the next box - if it is in box 5, goes back to 1
   let nxt = eval(n[1]) + 1;
@@ -219,3 +257,5 @@ function readLetter(e) {
   document.getElementById("l" + String(nxt)).focus();
   applyEnteredLetters();
 }
+
+function goLetters() {}

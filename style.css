@@ -36,6 +36,43 @@
 .ch4 {left:280px;}
 .ch5 {left:330px;}
 
+.btngo {
+    color:#000000;
+    background-color:#F2F2F2; 
+    font-size: 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    position: absolute;
+    left: 400px;
+    top: 60px;
+    width: 75px;
+    height: 45px;
+    transition: all 0.2s;
+}
+.btngo:hover {
+    color:#F2F2F2;
+    background-color: #000000;
+}
+
+.allletters{
+    position: absolute;
+    display: block;
+    top: 130px;
+    left:130px;
+}
+
+.letterbox {
+    background-color: #F2F2F2;
+    color: #000000;
+    font-size: 15px;
+    width: 25px;
+    max-width: 25px;
+    height: 25px;
+    max-height: 25px;
+}
+
 .btngrey {
     background-color: rgba(128, 128, 128, 0.733);
     left:0px;
