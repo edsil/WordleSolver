@@ -133,6 +133,7 @@ function defocused(e) {
 
 function clickHandler(e) {
   let letter = eval(e.id[1]);
+  if (filters[letter - 1].includes(3)) return;
   let color = eval(e.id[2]);
   cs[letter - 1] = color;
   let lastClass = ls[letter - 1].classList[2];
@@ -146,6 +147,7 @@ function clickHandler(e) {
 
 function rotate(e) {
   let letter = eval(e.id[1]);
+  if (filters[letter - 1].includes(3)) return;
   let currColor = e.classList[1];
   let focState = e.classList[2];
   e.classList.remove(currColor);
@@ -201,18 +203,19 @@ function readLetter(e) {
   let el = document.activeElement;
   let n = el.id;
   if (n[0] != "l") return;
+  let letPos = eval(n[1]) - 1;
   let k = e.keyCode;
   switch (k) {
     case 8: // Backspace
     case 37: // Left Key
-      let prev = eval(n[1]) - 1;
+      let prev = letPos;
       if (prev < 1) prev = 1;
       if (k == 8) el.value = ""; //backspace
       document.getElementById("l" + String(prev)).focus();
       applyEnteredLetters();
       return;
     case 39: // Right Key
-      let nxt = eval(n[1]) + 1;
+      let nxt = letPos + 2;
       if (nxt > 5) nxt = 5;
       document.getElementById("l" + String(nxt)).focus();
       return;
@@ -226,39 +229,7 @@ function readLetter(e) {
       document.getElementById("l5").focus();
       return;
   }
-  /*
-  if (k == 8 || k == 37) {
-    //left key or backspace
-    let prev = eval(n[1]) - 1;
-    if (prev < 1) prev = 1;
-    if (k == 8) el.value = ""; //backspace
-    document.getElementById("l" + String(prev)).focus();
-    applyEnteredLetters();
-    return;
-  }
-  if (k == 39) {
-    //Right Key
-    let nxt = eval(n[1]) + 1;
-    if (nxt > 5) nxt = 5;
-    document.getElementById("l" + String(nxt)).focus();
-    return;
-  }
-  if (k == 32) {
-    rotate(el);
-    return;
-  }
 
-  if (k == 38) {
-    //up key
-    document.getElementById("l1").focus();
-    return;
-  }
-  if (k == 40) {
-    //down key
-    document.getElementById("l5").focus();
-    return;
-  }
-*/
   //NOT a valid a-z; A-Z
   if (k < 65 || (k > 90 && k < 97) || k > 122) {
     //el.value = "";
@@ -271,6 +242,21 @@ function readLetter(e) {
   }
 
   el.value = String.fromCharCode(k).toUpperCase();
+  k = el.value.toLowerCase().charCodeAt(0);
+  let currColor = el.classList[1];
+  if (filters[letPos][k - 97] == 3 && currColor != states[3]) {
+    let focState = el.classList[2];
+    el.classList.remove(currColor);
+    el.classList.remove(focState);
+    el.classList.add(states[3]);
+    el.classList.add(focState);
+  } else if (filters[letPos][k - 97] != 3 && currColor == states[3]) {
+    let focState = el.classList[2];
+    el.classList.remove(currColor);
+    el.classList.remove(focState);
+    el.classList.add(states[0]);
+    el.classList.add(focState);
+  }
 
   // move focus to the next box - if it is in box 5, goes back to 1
   let nxt = eval(n[1]) + 1;

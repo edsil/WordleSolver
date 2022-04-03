@@ -21,6 +21,22 @@
     cursor: none;
 }
 
+.tip1, .tip2, .tip3, .tip4, .tip5 {
+    position: absolute;
+    display: block;
+    top: 50px;
+    width: 45px;
+    height: 5px;
+    max-width: 45px;
+    max-height: 5px;
+    border: 1px solid #000000;
+}
+.tip1 {left:130px;}
+.tip2 {left:180px;}
+.tip3 {left:230px;}
+.tip4 {left:280px;}
+.tip5 {left:330px;}
+
 .ch1, .ch2, .ch3, .ch4, .ch5 {
     position: absolute;
     display: block;
@@ -97,14 +113,14 @@
     left: 130px;
     height: 400px;
     width: 245px;
-    border: 0qpx solid #8b8b8b;
+    border: 0px solid #8b8b8b;
 }
 
 .fc {border: 3px solid #000000;}
 .uf {border: 1px solid #CCCCCC;}
 
 .bl {background-color: #F2F2F2;}
-.gr {background-color: #808080;}
+.gr {background-color: #808080; text-decoration: line-through #000000; color: #3f3f3f}
 .yl {background-color: #FFFF00;}
 .gn {background-color: #008000;}
 .rd {background-color: #FF0000;}
