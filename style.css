@@ -89,6 +89,17 @@
     left:30px;
 }
 
+.guesses {
+    position: absolute;
+    font-size: 25px;
+    display: block;
+    top: 230px;
+    left: 130px;
+    height: 400px;
+    width: 245px;
+    border: 0qpx solid #8b8b8b;
+}
+
 .fc {border: 3px solid #000000;}
 .uf {border: 1px solid #CCCCCC;}
 
@@ -96,6 +107,7 @@
 .gr {background-color: #808080;}
 .yl {background-color: #FFFF00;}
 .gn {background-color: #008000;}
+.rd {background-color: #FF0000;}
 
 .l1, .l2, .l3, .l4, .l5 {
     width: 45px;

@@ -3,9 +3,9 @@ let ls = [];
 ls.length = 5;
 let letters = [];
 letters.length = 27;
-let wordlist, allLetters;
+let wordlist, allLetters, guesses;
 let cs = [0, 0, 0, 0, 0];
-let states = ["bl", "gr", "yl", "gn"];
+let states = ["bl", "gr", "yl", "gn", "rd"];
 let colors = [];
 let words = [];
 let tmpWords = [];
@@ -13,7 +13,7 @@ let listCursor = 0;
 let tableText = "";
 let filters = [];
 let updatinglist = false;
-loadFile("./wordle-allowed-guesses.txt");
+loadFile("./wordle-combined-alphabetical.txt");
 
 window.onload = function () {
   getElements();
@@ -44,6 +44,7 @@ function getElements() {
   ls[4] = document.getElementById("l5");
   wordlist = document.getElementById("wordlist");
   allLetters = document.getElementById("allLetters");
+  guesses = document.getElementById("guesses");
 }
 
 function createLetters() {
@@ -201,6 +202,31 @@ function readLetter(e) {
   let n = el.id;
   if (n[0] != "l") return;
   let k = e.keyCode;
+  switch (k) {
+    case 8: // Backspace
+    case 37: // Left Key
+      let prev = eval(n[1]) - 1;
+      if (prev < 1) prev = 1;
+      if (k == 8) el.value = ""; //backspace
+      document.getElementById("l" + String(prev)).focus();
+      applyEnteredLetters();
+      return;
+    case 39: // Right Key
+      let nxt = eval(n[1]) + 1;
+      if (nxt > 5) nxt = 5;
+      document.getElementById("l" + String(nxt)).focus();
+      return;
+    case 32: // Space
+      rotate(el);
+      return;
+    case 38: // Up Key
+      document.getElementById("l1").focus();
+      return;
+    case 40: // Down Key
+      document.getElementById("l5").focus();
+      return;
+  }
+  /*
   if (k == 8 || k == 37) {
     //left key or backspace
     let prev = eval(n[1]) - 1;
@@ -208,6 +234,13 @@ function readLetter(e) {
     if (k == 8) el.value = ""; //backspace
     document.getElementById("l" + String(prev)).focus();
     applyEnteredLetters();
+    return;
+  }
+  if (k == 39) {
+    //Right Key
+    let nxt = eval(n[1]) + 1;
+    if (nxt > 5) nxt = 5;
+    document.getElementById("l" + String(nxt)).focus();
     return;
   }
   if (k == 32) {
@@ -225,18 +258,19 @@ function readLetter(e) {
     document.getElementById("l5").focus();
     return;
   }
-
-  //NOT the righ-arrow-key nor a valid a-z; A-Z
-  if (k != 39 && (k < 65 || (k > 90 && k < 97) || k > 122)) {
-    el.value = "";
+*/
+  //NOT a valid a-z; A-Z
+  if (k < 65 || (k > 90 && k < 97) || k > 122) {
+    //el.value = "";
+    let ev = el.value.charCodeAt(0); //Current value at the box
+    if (ev < 65 || (ev > 90 && ev < 97) || ev > 122) {
+      el.value = "";
+    }
     applyEnteredLetters();
     return;
   }
 
-  // if a upper-case letter, changes to lower case
-  //if (k >= 65 && k <= 90) {
   el.value = String.fromCharCode(k).toUpperCase();
-  //}
 
   // move focus to the next box - if it is in box 5, goes back to 1
   let nxt = eval(n[1]) + 1;
@@ -250,11 +284,110 @@ function readLetter(e) {
 }
 
 function goLetters() {
-  let letterCodes = [];
+  for (let i = 0; i < 5; i++) {
+    if (ls[i].value.length < 1) {
+      alert("All boxes must be filled with a valid letter!");
+      ls[i].focus();
+      return;
+    }
+  }
+
+  let row = document.createElement("tr");
+  row.style.textAlign = "center";
+  row.style.verticalAlign = "middle";
+  row.style.height = "49px";
   for (let i = 0; i < 5; i++) {
     let letterCode = ls[i].value.toLowerCase().charCodeAt(0) - 97;
     let color = cs[i];
     letters[letterCode].classList.remove(letters[letterCode].classList[2]);
     letters[letterCode].classList.add(states[color]);
+    let cell = document.createElement("td");
+    cell.classList.add(states[color]);
+    cell.style.width = "49px";
+    cell.innerHTML = ls[i].value.toUpperCase();
+    row.appendChild(cell);
+    updateFilter(color, i, letterCode);
+    words = updateWords(words, color, i, letterCode);
+    let id = ls[i].classList[0];
+    ls[i].classList.remove(ls[i].classList[2]);
+    ls[i].classList.remove(ls[i].classList[1]);
+    ls[i].classList.add("bl");
+    ls[i].classList.add("uf");
+    ls[i].value = "";
+    cs[i] = 0;
+  }
+  guesses.insertBefore(row, guesses.firstChild);
+  updateList(words);
+  ls[0].focus();
+}
+
+function updateFilter(cond, letPos, letCode) {
+  if (cond == 0) return;
+  if (cond == 1) {
+    for (let i = 0; i < 5; i++) {
+      if (filters[i][letCode] != 3) filters[i][letCode] = 1;
+    }
+    return;
+  }
+  if (cond == 2) {
+    filters[letPos][letCode] = 1;
+    return;
+  }
+  if (cond == 3) {
+    for (let i = 0; i < 26; i++) {
+      filters[letPos][i] = 1;
+    }
+    filters[letPos][letCode] = 3;
   }
 }
+
+function updateWords(wordsList, cond, letPos, letCode) {
+  if (cond == 0) return wordsList;
+  if (cond == 1) {
+    function iFilter(value) {
+      for (let i = 0; i < 5; i++) {
+        if (value.charCodeAt(i) - 97 == letCode) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return wordsList.filter(iFilter);
+  }
+
+  if (cond == 2) {
+    function iFilter(value) {
+      if (value.charCodeAt(letPos) - 97 == letCode) return false;
+      return true;
+    }
+    return wordsList.filter(iFilter);
+  }
+
+  if (cond == 3) {
+    function iFilter(value) {
+      if (value.charCodeAt(letPos) - 97 != letCode) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return wordsList.filter(iFilter);
+  }
+}
+
+/*
+
+let pos = 0;
+  function iFilter(value) {
+    return letters[pos] == "" || value[pos] == letters[pos];
+  }
+
+  let newList = listArray.filter(iFilter);
+  pos = 1;
+  while (pos < 5) {
+    newList = newList.filter(iFilter);
+    pos += 1;
+  }
+  return newList;
+
+  */
