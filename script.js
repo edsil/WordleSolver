@@ -285,16 +285,19 @@ function goLetters() {
   for (let i = 0; i < 5; i++) {
     let letterCode = ls[i].value.toLowerCase().charCodeAt(0) - 97;
     let color = cs[i];
-    letters[letterCode].classList.remove(letters[letterCode].classList[2]);
-    letters[letterCode].classList.add(states[color]);
     let cell = document.createElement("td");
-    cell.classList.add(states[color]);
     cell.style.width = "49px";
-    cell.innerHTML = ls[i].value.toUpperCase();
+    let currState = letters[letterCode].classList[2];
+    if ((currState == "bl" || currState == "yl") && color > 0 && color < 4) {
+      letters[letterCode].classList.remove(currState);
+      letters[letterCode].classList.add(states[color]);
+      cell.classList.add(states[color]);
+      cell.innerHTML = ls[i].value.toUpperCase();
+      updateFilter(color, i, letterCode);
+      words = updateWords(words, color, i, letterCode);
+    } else cell.classList.add("bl");
+
     row.appendChild(cell);
-    updateFilter(color, i, letterCode);
-    words = updateWords(words, color, i, letterCode);
-    let id = ls[i].classList[0];
     ls[i].classList.remove(ls[i].classList[2]);
     ls[i].classList.remove(ls[i].classList[1]);
     ls[i].classList.add("bl");
@@ -344,7 +347,8 @@ function updateWords(wordsList, cond, letPos, letCode) {
   if (cond == 2) {
     function iFilter(value) {
       if (value.charCodeAt(letPos) - 97 == letCode) return false;
-      return true;
+      if (value.includes(String.fromCharCode(letCode + 97))) return true;
+      return false;
     }
     return wordsList.filter(iFilter);
   }
